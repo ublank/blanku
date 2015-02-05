@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150205202005) do
+ActiveRecord::Schema.define(version: 20150205203519) do
 
   create_table "answer_cards", force: :cascade do |t|
     t.integer  "user_id"
@@ -25,8 +25,7 @@ ActiveRecord::Schema.define(version: 20150205202005) do
     t.integer  "user_id"
     t.string   "text"
     t.string   "url"
-    t.string   "expiration_date"
-    t.string   "datetime"
+    t.datetime "expiration_date"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
   end
