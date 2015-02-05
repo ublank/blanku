@@ -5,6 +5,6 @@ class UserNotifier < ActionMailer::Base
   def send_signup_email(user)
   	@user = user
     mail( :to => user.email,
-    :subject => 'BlankU for signing up to UBlank.' )
+    :subject => 'BlankU for signing up to UBlank!' )
   end
 end
