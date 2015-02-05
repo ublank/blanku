@@ -23,4 +23,3 @@ group :development, :test do
   gem 'capybara'
 end
 
-
