@@ -4,9 +4,13 @@ describe QuestionCard do
 
   describe "when many answer cards are created that reference it" do
     it "will have many answer cards" do
-      user = User.create(fname:"Bob", lname:"Smith", email:"bob@bob.com", password:"123")
-      q_card = QuestionCard.new()
-
+      user = User.create({fname:"Bob", lname:"Smith", email:"bob@bob.com", password:"123"})
+      user2 = User.create({fname:"Bob", lname:"Jones", email:"bob@bob.com", password:"123"})
+      q_card = QuestionCard.create({user_id:user.id, text:"some text", url:"www.google.com"})
+      AnswerCard.create({ user_id:user2.id, text:"some text", question_card_id:q_card.id })
+      AnswerCard.create({ user_id:user2.id, text:"some text", question_card_id:q_card.id })
+      AnswerCard.create({ user_id:user2.id, text:"some text", question_card_id:q_card.id })
+      expect(q_card.answer_cards.length).to be(3)
     end
   end
 
