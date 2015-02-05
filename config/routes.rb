@@ -1,11 +1,14 @@
 Rails.application.routes.draw do
-  get 'users/new'
-
-  get 'users/show'
-
-  get 'users/create'
-
   root 'welcome#index'
 
+  get 'users/new'
+  get 'users/show'
+  get 'users/create'
+
   resources :users
+
+  namespace :api do
+    resources :question_cards
+  end
+
 end
