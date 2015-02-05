@@ -7,9 +7,21 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 # demo user
+User.destroy_all
+AnswerCard.destroy_all
+QuestionCard.destroy_all
 
-test = User.create({fname: "test", lname: "test", email: "test@test.com", password: "test", image_url: "https://www.dwolla.com/avatars/" ,})
+user1 = User.create({fname: "test", lname: "test", email: "test@test.com", password: "test", image_url: "https://www.dwolla.com/avatars/" ,})
 
-answer_card_test = AnswerCard.create({user_id: 1, test: "test answer", question_card_id: 1})
+question_card1 = QuestionCard.create({user_id:user1.id, text: "test question", url: "www.google.com"})
+question_card2 = QuestionCard.create({user_id:user1.id, text: "another question", url: "www.yahoo.com"})
+question_card3 = QuestionCard.create({user_id:user1.id, text: "yet another question ", url: "www.cheezburger.com"})
 
-question_card_test = QuestionCard.create({user_id: 1, text: "test question", url: "sharelink"})
+AnswerCard.create({user_id: user1.id, text: "test answer", question_card_id: question_card1})
+AnswerCard.create({user_id: user1.id, text: "test answer", question_card_id: question_card1})
+AnswerCard.create({user_id: user1.id, text: "test answer", question_card_id: question_card1})
+
+
+
+
+

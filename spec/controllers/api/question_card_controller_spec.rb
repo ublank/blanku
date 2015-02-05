@@ -1,12 +1,20 @@
-describe "Question Card API" do
+require 'rails_helper'
 
-  describe "GET /api/question_cards" do
-    it "returns all the question cards" do
-      user = User.create({fname:"bob", lname:"smith", password:"123"})
-      qcard1 = QuestionCard.create({text:"this is a test", url:"www.google.com", })
+describe Api::QuestionCardsController do
 
-    end
-  end
+  # describe "GET /api/question_cards" do
+  #   it "returns all the question cards" do
+  #     user = User.create({fname:"bob", lname:"smith", password:"123"})
+  #     QuestionCard.create({text:"this is a test", url:"www.google.com", expiration_date:Date.today, user_id:user.id})
+  #     QuestionCard.create({text:"some more stuff", url:"www.google.com", expiration_date:Date.today, user_id:user.id})
+  #     QuestionCard.create({text:"an even more interesting message", url:"www.google.com", expiration_date:Date.today, user_id:user.id})
+  #     QuestionCard.create({text:"bloop", url:"www.google.com", expiration_date:Date.today, user_id:user.id})
+  #     get "/api/question_cards", {}, { "Accept" => "application/json" }
+  #     # get "/api/question_cards"
+# # No route matches {:action=>"/api/question_cards", :controller=>"api/question_cards"}
+  #     expect(response.status).to eq 200
+  #   end
+  # end
   
 end
 

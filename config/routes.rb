@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     resources :question_cards
+    resources :answer_cards
   end
 
 end
