@@ -13,7 +13,6 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'pry-rails'
 
 gem 'bcrypt', '~> 3.1.7'
-gem 'has_secure_token'
 
 group :development, :test do
   gem 'byebug'
