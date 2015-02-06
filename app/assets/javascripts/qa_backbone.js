@@ -86,7 +86,7 @@ Cards.Templates.AnswerCardNew = [
 
   //"<h3><%= answerTitle %></h3>",
   "<input id='answerText' type='text' value='<%= answerText %>' />",
-  // Consider a class then an ID. 
+  // Consider a class then an ID.
   "<button class='answer'>Submit</button>"
 ].join("");
 
@@ -111,7 +111,6 @@ Cards.Views.AnswerCard = Backbone.View.extend({
 
     this.listenTo(this.model, 'change', this.render);
     console.log(this.model);
-    //this.model.save();
   },
 
   tagName: 'div',
@@ -136,9 +135,9 @@ Cards.Views.AnswerCard = Backbone.View.extend({
   },
 
   submit: function() {
-    this.model.attributes.answerText = $(this.el.querySelector('input#answerText')).val();
+    this.model.attributes.text = $(this.el.querySelector('input#answerText')).val();
     this.render();
-    // $.post('/api/answers',answerText);
+    this.model.save();
   },
 
 });
@@ -170,13 +169,8 @@ Cards.Views.QuestionCard = Backbone.View.extend({
   },
 
   submit: function() {
-    this.model.attributes.questionText = $(this.el.querySelector('input#questionText')).val();
+    this.model.attributes.text = $(this.el.querySelector('input#questionText')).val();
     this.render();
+    this.model.save();
   }
 });
-
-
-
-
-
-
