@@ -8,7 +8,7 @@ class SessionController < ApplicationController
 
     if user && user.authenticate(params[:password])
       session[:token] = user.auth_token
-      session[:login_error] = "Success"
+      session[:login_error] = nil # "Success"
       redirect_to '/'
 	  else
       session[:login_error] = "Login Error"
