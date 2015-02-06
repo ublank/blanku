@@ -19,6 +19,7 @@ Cards.Models.QuestionCard = Backbone.Model.extend(
 
 Cards.Models.AnswerCard = Backbone.Model.extend(
   {
+    // url: "/api/answer_cards/",
     initialize: function() {
 
     },
@@ -29,8 +30,7 @@ Cards.Models.AnswerCard = Backbone.Model.extend(
 
 Cards.Collections.CommunityAnswers = Backbone.Collection.extend({
   model: Cards.Models.AnswerCard,
-  url: "/api/answer_cards/" 
-
+  url: "/api/answer_cards/"
 });
 
 Cards.Collections.CommunityStack = Backbone.Collection.extend({
@@ -110,8 +110,10 @@ Cards.Views.AnswerCard = Backbone.View.extend({
   initialize: function(){
 
     this.listenTo(this.model, 'change', this.render);
-  
+    console.log(this.model);
+    //this.model.save();
   },
+
   tagName: 'div',
   events: {
     "click button[class='answer']": 'submit'
