@@ -7,7 +7,7 @@ class SessionController < ApplicationController
   	user = User.find_by(email: params[:email])
 
     if user && user.authenticate(params[:password])
-      session[:token] = user.auth_token
+      session[:user_id] = user.id
       session[:error] = nil # "Success"
       redirect_to '/'
 	  else
