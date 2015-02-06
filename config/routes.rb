@@ -7,6 +7,8 @@ Rails.application.routes.draw do
 
   resources :users
 
+  resources :sessions, only: [:create, :destroy]
+
   namespace :api do
     resources :question_cards
     resources :answer_cards
