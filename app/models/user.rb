@@ -3,5 +3,5 @@ class User < ActiveRecord::Base
     self.has_many(:question_cards)
     self.has_many(:answer_cards)
 
-	has_secure_token :auth_token
+	self.has_secure_token :auth_token
 end
