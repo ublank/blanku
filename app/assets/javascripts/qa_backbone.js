@@ -29,7 +29,7 @@ Cards.Models.AnswerCard = Backbone.Model.extend(
 
 Cards.Collections.CommunityAnswers = Backbone.Collection.extend({
   model: Cards.Models.AnswerCard,
-  url: "/api/question_cards/" 
+  url: "/api/answer_cards/" 
 
 });
 
