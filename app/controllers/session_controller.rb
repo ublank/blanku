@@ -6,12 +6,12 @@ class SessionController < ApplicationController
   def create
   	user = User.find_by(email: params[:email])
 
-  	if user && user..authenticate(params[:password])
+  	if user && user.authenticate(params[:password])
 		redirect_to '/index'
 	else
 		render :new	
   	end
-  ends
+  end
 
   def destroy
   	reset_session
