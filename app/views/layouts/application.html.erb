@@ -3,7 +3,8 @@
 <head>
   <title>Ublank</title>
   <%= javascript_tag do %>
-    var auth_token = '<%= session[:token] %>';
+    var Auth = '<%= session[:token] %>';
+    var Error = '<%= session[:error] %>'
   <% end %>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
