@@ -8,8 +8,8 @@
 
 # demo user
 
-test = User.create({fname: "test", lname: "test", email: "test@test.com", password: "test", image_url: "https://www.dwolla.com/avatars/" ,})
+# test = User.create({fname: "test", lname: "test", email: "test@test.com", password: "test", image_url: "https://www.dwolla.com/avatars/" ,})
 
-answer_card_test = AnswerCard.create({user_id: 1, test: "test answer", question_card_id: 1})
+answer_card_test = AnswerCard.create({user_id: 1, text: "test answer", question_card_id: 1})
 
 question_card_test = QuestionCard.create({user_id: 1, text: "test question", url: "sharelink"})
