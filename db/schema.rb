@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(version: 20150206213700) do
 
   create_table "answer_cards", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "text"
+    t.string   "answer_text"
     t.integer  "question_card_id"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20150206213700) do
 
   create_table "question_cards", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "text"
+    t.string   "question_text"
     t.string   "url"
     t.datetime "expiration_date"
     t.datetime "created_at",      null: false
