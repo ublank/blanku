@@ -85,23 +85,23 @@ Cards.Templates.QuestionCardCompleted = [
 Cards.Templates.AnswerCardNew = [
 
   //"<h3><%= answerTitle %></h3>",
-  "<input id='answerText' type='text' value='<%= answerText %>' />",
+  "<input id='answerText' type='text' value='<%= answer_text %>' />",
   // Consider a class then an ID.
   "<button class='answer'>Submit</button>"
 ].join("");
 
 Cards.Templates.QuestionCardNew = [
-  "<input id='questionText' type='text' value='<%= questionText %>' />",
+  "<input id='questionText' type='text' value='<%= question_text %>' />",
   "<button class='question'>Submit</button>"
 ].join("");
 
 
 Cards.Templates.AnswerCardCompleted = [
-  "<p> <%= answerText %> </p>"
+  "<p> <%= answer_text %> </p>"
 ].join("");
 
 Cards.Templates.QuestionCard = [
-  "<p> <%= questionText %> </p>"
+  "<p> <%= question_text %> </p>"
 ].join("");
 
 
@@ -174,3 +174,15 @@ Cards.Views.QuestionCard = Backbone.View.extend({
     this.model.save();
   }
 });
+
+// document.onload(function (){
+// var divMain = document.querySelector('div.main');
+// answers = new Cards.Collections.CommunityAnswers();
+// var AnswerCard = new Cards.Models.AnswerCard();
+// var AnswerCardView = new Cards.Views.AnswerCard({model: AnswerCard, el: divMain});
+// AnswerCard.attributes.answer_text = "asdf";
+// AnswerCardView.renderNew();
+// });
+
+    
+

@@ -33,7 +33,7 @@ class Api::QuestionCardsController < ApplicationController
   #HTTParty.delete('http://localhost:3000/api/question_cards/4')
 
   def question_card_params
-    params.require(:question_card).permit(:user_id, :text, :url, :expiration_date)
+    params.require(:question_card).permit(:user_id, :question_text, :url, :expiration_date)
   end
 
 end
