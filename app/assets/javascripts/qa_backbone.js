@@ -138,23 +138,11 @@ Cards.Views.QuestionCard = Backbone.View.extend({
     this.listenTo(this.model, 'all', this.render); //change 'all' to sync later
   },
 
-  tagName: 'div',
-
-  events: { "click button[class='question']": 'submit' },
-
   render: function(){
     var self = this;
     var template = _.template( Cards.Templates.QuestionCard );
     this.$el.empty();
     this.$el.html( template(this.model.attributes) );
-    return self;
-  },
-
-  renderNew: function(){
-    var templateNew = _.template( Cards.Templates.QuestionCardNew );
-    var self = this;
-    this.$el.empty();
-    this.$el.html( templateNew(this.model.attributes) );
     return self;
   },
 
@@ -166,10 +154,6 @@ Cards.Views.QuestionCard = Backbone.View.extend({
 });
 
 Cards.Views.QuestionCardForm = Backbone.View.extend({
-
-  initialize: function(){ },
-
-  tagName: 'div',
 
   events: { "click button[class='question']": 'submit' },
 
@@ -186,20 +170,25 @@ Cards.Views.QuestionCardForm = Backbone.View.extend({
   }
 });
 
+//DOCUMENT RENDER FUNCTIONS
+function renderQuestionForm() {
+    questionFormDiv = document.querySelector('div.questionForm');
+    questionFormView = new Cards.Views.QuestionCardForm({el: questionFormDiv, model: new Cards.Models.QuestionCard() });
+    questionFormView.render();
+}
 
+function renderDailyDeck() {
+    divMain = document.querySelector('div.questionCard');
+    questionCards = new Cards.Collections.QuestionCards();
+    questionsView = new Cards.Views.QuestionCards({el: divMain, collection:questionCards});
+}
 
+function renderAnswerForm(questionID) {
+    answerFormDiv = document.querySelector('div.answerForm');
+}
 
 $(document).ready(function() {
-divMain = document.querySelector('div.questionCard');
-questionCards = new Cards.Collections.QuestionCards();
-questionsView = new Cards.Views.QuestionCards({el: divMain, collection:questionCards});
-
-questionFormDiv = document.querySelector('div.questionForm');
-questionFormView = new Cards.Views.QuestionCardForm({el: questionFormDiv, model: new Cards.Models.QuestionCard() });
-questionFormView.render();
+    // renderQuestionForm();
+    // renderDailyDeck();
+    renderAnswerForm(5);
 });
-// answers = new Cards.Collections.AnswerCards();
-// var AnswerCard = new Cards.Models.AnswerCard();
-// var AnswerCardView = new Cards.Views.AnswerCard({model: AnswerCard, el: divMain});
-// AnswerCard.attributes.answer_text = "asdf";
-// AnswerCardView.renderNew();
