@@ -19,7 +19,7 @@ Cards.Models.QuestionCard = Backbone.Model.extend(
 
 Cards.Models.AnswerCard = Backbone.Model.extend(
   {
-    // url: "/api/answer_cards/",
+    url: "/api/answer_cards/",
     initialize: function() {
 
     },
@@ -135,7 +135,7 @@ Cards.Views.AnswerCard = Backbone.View.extend({
   },
 
   submit: function() {
-    this.model.attributes.text = $(this.el.querySelector('input#answerText')).val();
+    this.model.attributes.answer_text = $(this.el.querySelector('input#answerText')).val();
     this.render();
     this.model.save();
   },
@@ -169,20 +169,18 @@ Cards.Views.QuestionCard = Backbone.View.extend({
   },
 
   submit: function() {
-    this.model.attributes.text = $(this.el.querySelector('input#questionText')).val();
+    this.model.attributes.question_text = $(this.el.querySelector('input#questionText')).val();
     this.render();
     this.model.save();
   }
 });
 
-// document.onload(function (){
 // var divMain = document.querySelector('div.main');
 // answers = new Cards.Collections.CommunityAnswers();
 // var AnswerCard = new Cards.Models.AnswerCard();
 // var AnswerCardView = new Cards.Views.AnswerCard({model: AnswerCard, el: divMain});
 // AnswerCard.attributes.answer_text = "asdf";
 // AnswerCardView.renderNew();
-// });
 
     
 
