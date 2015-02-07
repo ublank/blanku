@@ -5,37 +5,37 @@ var Cards = Cards || {
   Templates: {}
 };
 
+//MODELS
+
 Cards.Models.QuestionCard = Backbone.Model.extend(
   {
-    initialize: function() {
-
-    },
-    defaults:{
-
-    }
-  }
-
+    url: "/api/question_cards/",
+    initialize: function() {},
+    defaults: {}
+  } 
 );
 
 Cards.Models.AnswerCard = Backbone.Model.extend(
   {
     url: "/api/answer_cards/",
-    initialize: function() {
-
-    },
-    defaults:{
-    }
+    initialize: function() {},
+    defaults: {}
   }
 );
 
+//COLLECTIONS
 Cards.Collections.CommunityAnswers = Backbone.Collection.extend({
-  model: Cards.Models.AnswerCard,
-  url: "/api/answer_cards/"
+  url: "/api/answer_cards/",
+  model: Cards.Models.AnswerCard
 });
 
 Cards.Collections.CommunityStack = Backbone.Collection.extend({
+  url: "/api/question_cards/",
   model: Cards.Models.QuestionCard
 });
+
+
+//COLLECTION-VIEWS
 
 Cards.Views.CommunityAnswers = Backbone.View.extend({
   initialize: function(){
@@ -51,8 +51,7 @@ Cards.Views.CommunityAnswers = Backbone.View.extend({
         var answerCardView = new Cards.Views.AnswerCard({ model: answerCard });
         self.$el.append( answerCardView.render().el );
       } //function
-    ); //each
-    return self;
+    ); //each return self;
   }
 });
 
@@ -74,17 +73,13 @@ Cards.Views.CommunityStack = Backbone.View.extend({
   }
 });
 
+//TEMPLATES
 Cards.Templates.QuestionCardCompleted = [
-
   "<h3><%= Testing Questions %></h3>",
   "<button class='questions'>Answer</button>"
-
 ].join("");
 
-
 Cards.Templates.AnswerCardNew = [
-
-  //"<h3><%= answerTitle %></h3>",
   "<input id='answerText' type='text' value='<%= answer_text %>' />",
   // Consider a class then an ID.
   "<button class='answer'>Submit</button>"
@@ -95,28 +90,22 @@ Cards.Templates.QuestionCardNew = [
   "<button class='question'>Submit</button>"
 ].join("");
 
+Cards.Templates.AnswerCardCompleted = [ "<p> <%= answer_text %> </p>" ].join("");
 
-Cards.Templates.AnswerCardCompleted = [
-  "<p> <%= answer_text %> </p>"
-].join("");
-
-Cards.Templates.QuestionCard = [
-  "<p> <%= question_text %> </p>"
-].join("");
+Cards.Templates.QuestionCard = [ "<p> <%= question_text %> </p>" ].join("");
 
 
-
+//MODEL-VIEWS
 Cards.Views.AnswerCard = Backbone.View.extend({
-  initialize: function(){
 
+  initialize: function(){
     this.listenTo(this.model, 'change', this.render);
     console.log(this.model);
   },
 
   tagName: 'div',
-  events: {
-    "click button[class='answer']": 'submit'
-  },
+
+  events: { "click button[class='answer']": 'submit' },
 
   render: function() {
     var templateDone = _.template( Cards.Templates.AnswerCardCompleted );
@@ -144,13 +133,12 @@ Cards.Views.AnswerCard = Backbone.View.extend({
 
 Cards.Views.QuestionCard = Backbone.View.extend({
   initialize: function(){
-    this.listenTo(this.model, 'all', this.render);
-    //change 'all' to sync later
+    this.listenTo(this.model, 'all', this.render); //change 'all' to sync later
   },
+
   tagName: 'div',
-  events: {
-    "click button[class='question']": 'submit'
-  },
+
+  events: { "click button[class='question']": 'submit' },
 
   render: function(){
     var self = this;
@@ -175,12 +163,13 @@ Cards.Views.QuestionCard = Backbone.View.extend({
   }
 });
 
-// var divMain = document.querySelector('div.main');
+$(document).ready(function() {
+divMain = document.querySelector('div.main');
+questionsView = new Cards.Views.CommunityStack({el: divMain});
+
+});
 // answers = new Cards.Collections.CommunityAnswers();
 // var AnswerCard = new Cards.Models.AnswerCard();
 // var AnswerCardView = new Cards.Views.AnswerCard({model: AnswerCard, el: divMain});
 // AnswerCard.attributes.answer_text = "asdf";
 // AnswerCardView.renderNew();
-
-    
-
