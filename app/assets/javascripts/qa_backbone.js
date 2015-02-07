@@ -15,19 +15,19 @@ Cards.Models.QuestionCard = Backbone.Model.extend(
   } 
 );
 
-Cards.Models.AnswerCard = Backbone.Model.extend(
-  {
-    url: "/api/answer_cards/",
-    initialize: function() {},
-    defaults: {}
-  }
-);
+// Cards.Models.AnswerCard = Backbone.Model.extend(
+//   {
+//     url: "/api/answer_cards/",
+//     initialize: function() {},
+//     defaults: {}
+//   }
+// );
 
 //COLLECTIONS
-Cards.Collections.AnswerCards = Backbone.Collection.extend({
-  url: "/api/answer_cards/",
-  model: Cards.Models.AnswerCard
-});
+// Cards.Collections.AnswerCards = Backbone.Collection.extend({
+//   url: "/api/answer_cards/",
+//   model: Cards.Models.AnswerCard
+// });
 
 Cards.Collections.QuestionCards = Backbone.Collection.extend({
   url: "/api/question_cards/",
@@ -37,40 +37,40 @@ Cards.Collections.QuestionCards = Backbone.Collection.extend({
 
 //COLLECTION-VIEWS
 
-Cards.Views.AnswerCards = Backbone.View.extend({
-  initialize: function(){
-    // this.collection.fetch();
-    this.listenTo(this.collection, 'all', this.render);
-  },
-  render: function(){
-    var self = this; //FIX THE SCOPE ISSUES
-    this.$el.empty();
+// Cards.Views.AnswerCards = Backbone.View.extend({
+//   initialize: function(){
+//     this.listenTo(this.collection, 'all', this.render);
+//   },
+//   render: function(){
+//     var self = this; //FIX THE SCOPE ISSUES
+//     this.$el.empty();
 
-    _.each( this.collection.models,
-      function(answerCard){
-        var answerCardView = new Cards.Views.AnswerCard({ model: answerCard });
-        self.$el.append( answerCardView.render().el );
-      } //function
-    ); //each return self;
-  }
-});
+//     _.each( this.collection.models,
+//       function(answerCard){
+//         var answerCardView = new Cards.Views.AnswerCard({ model: answerCard });
+//         self.$el.append( answerCardView.render().el );
+//       } //function
+//     ); //each return self;
+//   }
+// });
 
 Cards.Views.QuestionCards = Backbone.View.extend({
-  intialize: function(){
-    this.listenTo(this.collection, 'all', this.render);
-  },
-  render: function(){
-    var self =this;
-    this.$el.empty();
+    initialize: function(){
+        this.collection.fetch();
+        this.listenTo(this.collection, 'all', this.render);
+    },
+    render: function(){
+        var self =this;
+        this.$el.empty();
 
-    _.each( this.collection.models,
-      function(questionCard){
-        var questionCardView = new Cards.Views.QuestionCard({ model: questionCard });
-        self.$el.append( questionCardView.render().el );
-      }
-    );//each
-    return self;
-  }
+        _.each( this.collection.models,
+                function(questionCard){
+                    var questionCardView = new Cards.Views.QuestionCard({ model: questionCard });
+                    self.$el.append( questionCardView.render().el );
+                }
+              );//each
+        return self;
+    }
 });
 
 //TEMPLATES
@@ -79,57 +79,59 @@ Cards.Templates.QuestionCardCompleted = [
   "<button class='questions'>Answer</button>"
 ].join("");
 
-Cards.Templates.AnswerCardNew = [
-  "<input id='answerText' type='text' value='<%= answer_text %>' />",
-  // Consider a class then an ID.
-  "<button class='answer'>Submit</button>"
-].join("");
+// Cards.Templates.AnswerCardNew = [
+//   "<input id='answerText' type='text' value='<%= answer_text %>' />",
+//   // Consider a class then an ID.
+//   "<button class='answer'>Submit</button>"
+// ].join("");
 
 Cards.Templates.QuestionCardNew = [
-  "<input id='questionText' type='text' value='<%= question_text %>' />",
+  "<h2>Ask your question</h2>",
+  "<textarea id='questionText'></textarea>",
+  '<br>',
   "<button class='question'>Submit</button>"
 ].join("");
 
-Cards.Templates.AnswerCardCompleted = [ "<p> <%= answer_text %> </p>" ].join("");
+// Cards.Templates.AnswerCardCompleted = [ "<p> <%= answer_text %> </p>" ].join("");
 
 Cards.Templates.QuestionCard = [ "<p> <%= question_text %> </p>" ].join("");
 
 
 //MODEL-VIEWS
-Cards.Views.AnswerCard = Backbone.View.extend({
+// Cards.Views.AnswerCard = Backbone.View.extend({
 
-  initialize: function(){
-    this.listenTo(this.model, 'change', this.render);
-    console.log(this.model);
-  },
+//   initialize: function(){
+//     this.listenTo(this.model, 'change', this.render);
+//     console.log(this.model);
+//   },
 
-  tagName: 'div',
+//   tagName: 'div',
 
-  events: { "click button[class='answer']": 'submit' },
+//   events: { "click button[class='answer']": 'submit' },
 
-  render: function() {
-    var templateDone = _.template( Cards.Templates.AnswerCardCompleted );
-    var self = this;
-    this.$el.empty();
-    this.$el.html( templateDone(this.model.attributes) );
-    return self;
-  },
+//   render: function() {
+//     var templateDone = _.template( Cards.Templates.AnswerCardCompleted );
+//     var self = this;
+//     this.$el.empty();
+//     this.$el.html( templateDone(this.model.attributes) );
+//     return self;
+//   },
 
-  renderNew: function() {
-    var templateNew = _.template( Cards.Templates.AnswerCardNew );
-    var self = this;
-    this.$el.empty();
-    this.$el.html( templateNew(this.model.attributes) );
-    return self;
-  },
+//   renderNew: function() {
+//     var templateNew = _.template( Cards.Templates.AnswerCardNew );
+//     var self = this;
+//     this.$el.empty();
+//     this.$el.html( templateNew(this.model.attributes) );
+//     return self;
+//   },
 
-  submit: function() {
-    this.model.attributes.answer_text = $(this.el.querySelector('input#answerText')).val();
-    this.render();
-    this.model.save();
-  },
+//   submit: function() {
+//     this.model.attributes.answer_text = $(this.el.querySelector('input#answerText')).val();
+//     this.render();
+//     this.model.save();
+//   },
 
-});
+// });
 
 Cards.Views.QuestionCard = Backbone.View.extend({
   initialize: function(){
@@ -163,10 +165,38 @@ Cards.Views.QuestionCard = Backbone.View.extend({
   }
 });
 
-$(document).ready(function() {
-divMain = document.querySelector('div.main');
-questionsView = new Cards.Views.QuestionCards({el: divMain});
+Cards.Views.QuestionCardForm = Backbone.View.extend({
 
+  initialize: function(){ },
+
+  tagName: 'div',
+
+  events: { "click button[class='question']": 'submit' },
+
+  render: function(){
+    var templateNew = _.template( Cards.Templates.QuestionCardNew );
+    this.$el.html( templateNew(this.model.attributes) );
+    return this;
+  },
+  
+  submit: function() {
+    this.model.attributes.question_text = $(this.el.querySelector('input#questionText')).val();
+    this.render();
+    this.model.save();
+  }
+});
+
+
+
+
+$(document).ready(function() {
+divMain = document.querySelector('div.questionCard');
+questionCards = new Cards.Collections.QuestionCards();
+questionsView = new Cards.Views.QuestionCards({el: divMain, collection:questionCards});
+
+questionFormDiv = document.querySelector('div.questionForm');
+questionFormView = new Cards.Views.QuestionCardForm({el: questionFormDiv, model: new Cards.Models.QuestionCard() });
+questionFormView.render();
 });
 // answers = new Cards.Collections.AnswerCards();
 // var AnswerCard = new Cards.Models.AnswerCard();
