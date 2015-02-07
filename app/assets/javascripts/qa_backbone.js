@@ -9,25 +9,32 @@ var Cards = Cards || {
 
 Cards.Models.QuestionCard = Backbone.Model.extend(
   {
-    url: "/api/question_cards/",
+    url: function (){
+        if(this.isNew()){
+            return "/api/question_cards/";
+        }else{
+            return "/api/question_cards/"+this.id;
+        }
+    },
     initialize: function() {},
     defaults: {}
   } 
 );
 
-// Cards.Models.AnswerCard = Backbone.Model.extend(
-//   {
-//     url: "/api/answer_cards/",
-//     initialize: function() {},
-//     defaults: {}
-//   }
-// );
+Cards.Models.AnswerCard = Backbone.Model.extend(
+  {
+    url: "/api/answer_cards/",
+    initialize: function() {},
+    defaults: {}
+  }
+);
 
 //COLLECTIONS
-// Cards.Collections.AnswerCards = Backbone.Collection.extend({
-//   url: "/api/answer_cards/",
-//   model: Cards.Models.AnswerCard
-// });
+
+Cards.Collections.AnswerCards = Backbone.Collection.extend({
+  url: "/api/answer_cards/",
+  model: Cards.Models.AnswerCard
+});
 
 Cards.Collections.QuestionCards = Backbone.Collection.extend({
   url: "/api/question_cards/",
@@ -37,22 +44,24 @@ Cards.Collections.QuestionCards = Backbone.Collection.extend({
 
 //COLLECTION-VIEWS
 
-// Cards.Views.AnswerCards = Backbone.View.extend({
-//   initialize: function(){
-//     this.listenTo(this.collection, 'all', this.render);
-//   },
-//   render: function(){
-//     var self = this; //FIX THE SCOPE ISSUES
-//     this.$el.empty();
+Cards.Views.AnswerCards = Backbone.View.extend({
 
-//     _.each( this.collection.models,
-//       function(answerCard){
-//         var answerCardView = new Cards.Views.AnswerCard({ model: answerCard });
-//         self.$el.append( answerCardView.render().el );
-//       } //function
-//     ); //each return self;
-//   }
-// });
+  initialize: function(){
+    this.listenTo(this.collection, 'all', this.render);
+  },
+
+  render: function(){
+    var self = this; //FIX THE SCOPE ISSUES
+    this.$el.empty();
+    _.each( this.collection.models,
+      function(answerCard){
+        var answerCardView = new Cards.Views.AnswerCard({ model: answerCard });
+        self.$el.append( answerCardView.render().el );
+      } //function
+    ); //each return self;
+  }
+
+});
 
 Cards.Views.QuestionCards = Backbone.View.extend({
     initialize: function(){
@@ -79,11 +88,13 @@ Cards.Templates.QuestionCardCompleted = [
   "<button class='questions'>Answer</button>"
 ].join("");
 
-// Cards.Templates.AnswerCardNew = [
-//   "<input id='answerText' type='text' value='<%= answer_text %>' />",
-//   // Consider a class then an ID.
-//   "<button class='answer'>Submit</button>"
-// ].join("");
+Cards.Templates.AnswerCardNew = [
+  "<h2>Answer the question</h2>",
+  "<textarea id='answerText'></textarea>",
+  '<br>',
+  "<button class='answer'>Submit</button>"
+
+].join("");
 
 Cards.Templates.QuestionCardNew = [
   "<h2>Ask your question</h2>",
@@ -92,46 +103,62 @@ Cards.Templates.QuestionCardNew = [
   "<button class='question'>Submit</button>"
 ].join("");
 
-// Cards.Templates.AnswerCardCompleted = [ "<p> <%= answer_text %> </p>" ].join("");
+Cards.Templates.AnswerCardCompleted = [ "<p> <%= answer_text %> </p>" ].join("");
 
 Cards.Templates.QuestionCard = [ "<p> <%= question_text %> </p>" ].join("");
 
 
 //MODEL-VIEWS
-// Cards.Views.AnswerCard = Backbone.View.extend({
+Cards.Views.AnswerCard = Backbone.View.extend({
 
-//   initialize: function(){
-//     this.listenTo(this.model, 'change', this.render);
-//     console.log(this.model);
-//   },
+  initialize: function(){
+    this.listenTo(this.model, 'change', this.render);
+  },
 
-//   tagName: 'div',
+  tagName: 'div',
 
-//   events: { "click button[class='answer']": 'submit' },
+  events: { "click button[class='answer']": 'submit' },
 
-//   render: function() {
-//     var templateDone = _.template( Cards.Templates.AnswerCardCompleted );
-//     var self = this;
-//     this.$el.empty();
-//     this.$el.html( templateDone(this.model.attributes) );
-//     return self;
-//   },
+  render: function() {
+    var templateDone = _.template( Cards.Templates.AnswerCardCompleted );
+    this.$el.empty();
+    this.$el.html( templateDone(this.model.attributes) );
+    return this;
+  },
 
-//   renderNew: function() {
-//     var templateNew = _.template( Cards.Templates.AnswerCardNew );
-//     var self = this;
-//     this.$el.empty();
-//     this.$el.html( templateNew(this.model.attributes) );
-//     return self;
-//   },
+  renderNew: function() {
+    var templateNew = _.template( Cards.Templates.AnswerCardNew );
+    this.$el.empty();
+    this.$el.html( templateNew(this.model.attributes) );
+    return this;
+  },
 
-//   submit: function() {
-//     this.model.attributes.answer_text = $(this.el.querySelector('input#answerText')).val();
-//     this.render();
-//     this.model.save();
-//   },
+  submit: function() {
+    this.model.attributes.answer_text = $(this.el.querySelector('input#answerText')).val();
+    this.render();
+    this.model.save();
+  },
 
-// });
+});
+
+Cards.Views.AnswerCardForm = Backbone.View.extend({
+  
+  events: { "click button[class='answer']": 'submit' },
+
+  render: function() {
+    var templateNew = _.template( Cards.Templates.AnswerCardNew );
+    this.$el.empty();
+    this.$el.html( templateNew(this.model.attributes) );
+    return this;
+  },
+
+  submit: function() {
+    this.model.attributes.answer_text = $(this.el.querySelector('textarea#answerText')).val();
+    this.render();
+    this.model.save();
+  },
+
+});
 
 Cards.Views.QuestionCard = Backbone.View.extend({
   initialize: function(){
@@ -164,7 +191,7 @@ Cards.Views.QuestionCardForm = Backbone.View.extend({
   },
   
   submit: function() {
-    this.model.attributes.question_text = $(this.el.querySelector('input#questionText')).val();
+    this.model.attributes.question_text = $(this.el.querySelector('textarea#questionText')).val();
     this.render();
     this.model.save();
   }
@@ -185,10 +212,12 @@ function renderDailyDeck() {
 
 function renderAnswerForm(questionID) {
     answerFormDiv = document.querySelector('div.answerForm');
+    answerFormView = new Cards.Views.AnswerCardForm({el: answerFormDiv, model: new Cards.Models.AnswerCard() });
+    answerFormView.render();
 }
 
 $(document).ready(function() {
-    // renderQuestionForm();
-    // renderDailyDeck();
-    renderAnswerForm(5);
+    renderQuestionForm();
+    renderDailyDeck();
+    // renderAnswerForm(5);
 });
