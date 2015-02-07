@@ -24,12 +24,12 @@ Cards.Models.AnswerCard = Backbone.Model.extend(
 );
 
 //COLLECTIONS
-Cards.Collections.CommunityAnswers = Backbone.Collection.extend({
+Cards.Collections.AnswerCards = Backbone.Collection.extend({
   url: "/api/answer_cards/",
   model: Cards.Models.AnswerCard
 });
 
-Cards.Collections.CommunityStack = Backbone.Collection.extend({
+Cards.Collections.QuestionCards = Backbone.Collection.extend({
   url: "/api/question_cards/",
   model: Cards.Models.QuestionCard
 });
@@ -37,7 +37,7 @@ Cards.Collections.CommunityStack = Backbone.Collection.extend({
 
 //COLLECTION-VIEWS
 
-Cards.Views.CommunityAnswers = Backbone.View.extend({
+Cards.Views.AnswerCards = Backbone.View.extend({
   initialize: function(){
     // this.collection.fetch();
     this.listenTo(this.collection, 'all', this.render);
@@ -55,7 +55,7 @@ Cards.Views.CommunityAnswers = Backbone.View.extend({
   }
 });
 
-Cards.Views.CommunityStack = Backbone.View.extend({
+Cards.Views.QuestionCards = Backbone.View.extend({
   intialize: function(){
     this.listenTo(this.collection, 'all', this.render);
   },
@@ -165,10 +165,10 @@ Cards.Views.QuestionCard = Backbone.View.extend({
 
 $(document).ready(function() {
 divMain = document.querySelector('div.main');
-questionsView = new Cards.Views.CommunityStack({el: divMain});
+questionsView = new Cards.Views.QuestionCards({el: divMain});
 
 });
-// answers = new Cards.Collections.CommunityAnswers();
+// answers = new Cards.Collections.AnswerCards();
 // var AnswerCard = new Cards.Models.AnswerCard();
 // var AnswerCardView = new Cards.Views.AnswerCard({model: AnswerCard, el: divMain});
 // AnswerCard.attributes.answer_text = "asdf";
