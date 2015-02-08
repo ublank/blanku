@@ -1,42 +1,20 @@
-<html>
-<head>
-	<title>UBlank</title>
-</head>
-<body>
-<h1>Sign In</h1>
-<form action="/session" method="POST">
-  <label>
-    Email:
-    <input type="text" name="email" />
-  </label>
 
-  <label>
-    Password:
-    <input type="text" name="password" />
-  </label>
+<div class='main'>
 
-  <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+    <div class='questionCard'>
+    </div>
 
-  <button name="signin">Sign In</button>
-</form>
+    <div class='answerForm'>
+    </div>
 
- <br>
- <br>
-  <h1>Create New Account</h1>
+    <div class='questionForm'>
+    </div>
 
-  	<form method="POST" action="/users">
-		First Name
-		<input type="text" name="fname"/>
-		Last Name
-		<input type="text" name="lname"/>
-		Email
-		<input type="text" name="email"/>
-		Password
-		<input type="text" name="password"/>
-		Image URL
-		<input type="text" name="image_url"/>
-	<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
-		<input type="submit"/>
-	</form>
-</body>
-</html>
+    <div class='questionCard'>
+    </div>
+
+    <div class='answerCards'>
+    </div>
+
+
+</div>
