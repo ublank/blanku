@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
   root 'welcome#index'
 
-  get 'users/new'
-  get 'users/show'
-  get 'users/create'
+  # get 'users/new'
+  # get 'users/show'
+  # get 'users/create'
 
-  resources :users
+  resources :users, only: [:create]
 
   resources :sessions, only: [:create, :destroy]
 
@@ -16,6 +16,8 @@ Rails.application.routes.draw do
     end
 
   end
+
+  get 'cards/*other', to: 'welcome#index'
 
 end
 
