@@ -218,8 +218,8 @@ function renderSingleQuestionView(questionID){
 }
 
 $(document).ready(function() {
-    // renderQuestionForm();
-    // renderDailyDeck();
-    // renderAnswerForm(5);
-    renderSingleQuestionView(5);
+    renderQuestionForm();  //render the question form (posts to question_card API)
+    renderDailyDeck();  //render a list of question cards alone (no answer cards)
+    renderAnswerForm(5);  //render answer_card form (while also showing the paired question card)
+    renderSingleQuestionView(5); //render a single question card and all its attendent answer cards
 });
