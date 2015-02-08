@@ -23,5 +23,11 @@ AnswerCard.create({user_id: user1.id, text: "test answer", question_card_id: que
 
 
 
+<<<<<<< HEAD
+# test = User.create({fname: "test", lname: "test", email: "test@test.com", password: "test", image_url: "https://www.dwolla.com/avatars/" ,})
 
+answer_card_test = AnswerCard.create({user_id: 1, text: "test answer", question_card_id: 1})
+=======
+
+>>>>>>> 4459926662fd70e98c42e3d79572cd1af0495e6c
 

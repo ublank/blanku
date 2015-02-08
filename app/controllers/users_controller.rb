@@ -1,3 +1,5 @@
+# require 'tk'
+
 class UsersController < ApplicationController
   def index
   end
@@ -6,6 +8,13 @@ class UsersController < ApplicationController
   end
 
   def create
+
+    pw = params["password"]
+    
+    if pw.length <= 7
+      @notice = "Password must be more than 7 characters! BlankU!"
+      
+    else
 		stuff = User.create({
  			fname: params["fname"],
  			lname: params["lname"],
@@ -23,7 +32,10 @@ class UsersController < ApplicationController
       		render :action => 'new'
     	end
 
+    end
+
 	end
+
 end
 
 
