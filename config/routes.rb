@@ -18,6 +18,6 @@ Rails.application.routes.draw do
   end
 
   get 'cards/*other', to: 'welcome#index'
+  get 'cards', to: 'welcome#index'
 
 end
-

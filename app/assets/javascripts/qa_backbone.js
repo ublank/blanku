@@ -172,7 +172,7 @@ Cards.Views.QuestionCardForm = Backbone.View.extend({
     this.$el.html( templateNew(this.model.attributes) );
     return this;
   },
-  
+
   submit: function() {
     this.model.attributes.question_text = $(this.el.querySelector('textarea#questionText')).val();
     this.render();
@@ -181,7 +181,7 @@ Cards.Views.QuestionCardForm = Backbone.View.extend({
 });
 
 Cards.Views.AnswerCardForm = Backbone.View.extend({
-  
+
   events: { "click button[class='answer']": 'submit' },
 
   render: function() {
@@ -251,9 +251,7 @@ Cards.Routers.Main = Backbone.Router.extend({
 
 });
 
-$(document).ready(function() {
-    // renderQuestionForm();
-    // renderDailyDeck();
-    // renderAnswerForm(5);
-    renderSingleQuestionView(5);
+$(function() {
+  window.router = new Cards.Routers.Main();
+  Backbone.history.start({pushState: true});
 });
