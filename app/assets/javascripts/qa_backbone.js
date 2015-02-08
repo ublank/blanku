@@ -23,7 +23,7 @@ Cards.Models.QuestionCard = Backbone.Model.extend(
 
 Cards.Models.AnswerCard = Backbone.Model.extend(
   {
-    url: "/api/answer_cards/",
+    url: "/api/question_cards/"+this.question_card_id+"/answer_cards",
     initialize: function() {},
     defaults: {}
   }
@@ -32,8 +32,17 @@ Cards.Models.AnswerCard = Backbone.Model.extend(
 //COLLECTIONS
 
 Cards.Collections.AnswerCards = Backbone.Collection.extend({
-  url: "/api/answer_cards/",
-  model: Cards.Models.AnswerCard
+
+  url: function(){
+      return "/api/question_cards/"+this.question_card_id+"/answer_cards";
+  },
+
+  model: Cards.Models.AnswerCard,
+
+  initialize: function (question_card_id){
+      this.question_card_id = question_card_id;
+  }
+
 });
 
 Cards.Collections.QuestionCards = Backbone.Collection.extend({
@@ -215,6 +224,9 @@ function renderSingleQuestionView(questionID){
     questionCard = new Cards.Models.QuestionCard({id:questionID});
     questionCard.fetch();
     questionView = new Cards.Views.QuestionCard({el:questionCardDiv, model:questionCard});
+    answerCards = new Cards.Collections.AnswerCards(questionID);
+    answerCards.fetch();
+    answerCardView = new Cards.Views.AnswerCards({collection: answerCards});
 }
 
 $(document).ready(function() {

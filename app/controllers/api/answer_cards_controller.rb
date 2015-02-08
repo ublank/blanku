@@ -1,23 +1,22 @@
 class Api::AnswerCardsController < ApplicationController
 
-  #GET /api/answer_cards
   def index 
-    render json: AnswerCard.all
+    question_card = QuestionCard.find(params[:question_card_id])
+    answer_cards = question_card.answer_cards
+    puts answer_cards
+    render json: answer_cards
   end
 
-  # POST /api/answer_cards 
   def create 
     qcard = AnswerCard.create(answer_card_params)
     render json: qcard
   end
   # result = HTTParty.post('http://localhost:3000/api/answer_cards', {body:{question_card_id:7, text: "another from httparty-------"}.to_json,  headers: {'Content-Type' => 'application/json'}})
   
-  #GET /api/answer_cards/:id
   def show
     render json: AnswerCard.find(params[:id])
   end
 
-  #PUT /api/answer_cards/:id
   def update
     card = AnswerCard.find(params[:id])
     card.update(answer_card_params)
@@ -25,7 +24,6 @@ class Api::AnswerCardsController < ApplicationController
   end
   # result = HTTParty.put('http://localhost:3000/api/answer_cards/1', {body:{question_card_id:7, text: "CHANGED!"}.to_json,  headers: {'Content-Type' => 'application/json'}})
 
-  #DELETE /api/answer_cards/:id
   def destroy
     AnswerCard.find(params[:id]).destroy
     head :no_content
