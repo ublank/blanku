@@ -24,10 +24,7 @@ Cards.Models.QuestionCard = Backbone.Model.extend(
 Cards.Models.AnswerCard = Backbone.Model.extend(
   {
     url: "/api/question_cards/"+this.question_card_id+"/answer_cards",
-    initialize: function() {
-        this.attributes.answer_text = "";
-    },
-    defaults: {}
+    initialize: function() { },
   }
 );
 
@@ -57,10 +54,11 @@ Cards.Collections.QuestionCards = Backbone.Collection.extend({
 Cards.Views.AnswerCards = Backbone.View.extend({
 
   initialize: function(){
-    this.listenTo(this.collection, 'all', this.render);
+    this.listenTo(this.collection, 'sync', this.render);
   },
 
   render: function(){
+
     var self = this; //FIX THE SCOPE ISSUES
     this.$el.empty();
     _.each( this.collection.models,
@@ -131,16 +129,18 @@ Cards.Views.AnswerCard = Backbone.View.extend({
     this.$el.html( templateDone(this.model.attributes) );
     return this;
   },
+
   submit: function() {
     this.model.attributes.answer_text = $(this.el.querySelector('input#answerText')).val();
     this.render();
     this.model.save();
-  },
+  }
 
 });
 
 
 Cards.Views.QuestionCard = Backbone.View.extend({
+
   initialize: function(){
     this.listenTo(this.model, 'all', this.render); //change 'all' to sync later
   },
@@ -158,6 +158,7 @@ Cards.Views.QuestionCard = Backbone.View.extend({
     this.render();
     this.model.save();
   }
+
 });
 
 // FORM-VIEWS
@@ -227,7 +228,8 @@ function renderSingleQuestionView(questionID){
 
     questionView = new Cards.Views.QuestionCard({el:questionCardDiv, model:questionCard});
     answerCards = new Cards.Collections.AnswerCards(questionID);
-    answerCardsView = new Cards.Views.AnswerCards({collection: answerCards});
+    answerCardsDiv = document.querySelector('div.answerCards');
+    answerCardsView = new Cards.Views.AnswerCards({collection: answerCards, el:answerCardsDiv});
     answerCards.fetch();
     // answerCardView.render();
 }
