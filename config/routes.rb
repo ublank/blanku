@@ -10,8 +10,12 @@ Rails.application.routes.draw do
   resources :sessions, only: [:create, :destroy]
 
   namespace :api do
-    resources :question_cards
-    resources :answer_cards
+
+    resources :question_cards do
+      resources :answer_cards
+    end
+
   end
 
 end
+
