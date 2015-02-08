@@ -2,7 +2,8 @@ var Cards = Cards || {
   Models: {},
   Collections: {},
   Views: {},
-  Templates: {}
+  Templates: {},
+  Routers: {}
 };
 
 //MODELS
@@ -18,7 +19,7 @@ Cards.Models.QuestionCard = Backbone.Model.extend(
     },
     initialize: function() {},
     defaults: {}
-  } 
+  }
 );
 
 Cards.Models.AnswerCard = Backbone.Model.extend(
@@ -171,7 +172,7 @@ Cards.Views.QuestionCardForm = Backbone.View.extend({
     this.$el.html( templateNew(this.model.attributes) );
     return this;
   },
-  
+
   submit: function() {
     this.model.attributes.question_text = $(this.el.querySelector('textarea#questionText')).val();
     this.render();
@@ -180,7 +181,7 @@ Cards.Views.QuestionCardForm = Backbone.View.extend({
 });
 
 Cards.Views.AnswerCardForm = Backbone.View.extend({
-  
+
   events: { "click button[class='answer']": 'submit' },
 
   render: function() {
@@ -198,41 +199,52 @@ Cards.Views.AnswerCardForm = Backbone.View.extend({
 
 });
 
-//DOCUMENT RENDER FUNCTIONS
-function renderQuestionForm(){
-    questionFormDiv = document.querySelector('div.questionForm');
-    questionFormView = new Cards.Views.QuestionCardForm({el: questionFormDiv, model: new Cards.Models.QuestionCard() });
-    questionFormView.render();
-}
+//DOCUMENT ROUTER
+Cards.Routers.Main = Backbone.Router.extend({
+  routes: {
+    '': 'renderDailyDeck',
+    'cards/new': 'renderQuestionForm',
+    'cards/:questionID': 'renderSingleQuestionView' 
+  }, // routes
 
-function renderDailyDeck(){
-    divMain = document.querySelector('div.questionCard');
-    questionCards = new Cards.Collections.QuestionCards();
-    questionsView = new Cards.Views.QuestionCards({el: divMain, collection:questionCards});
-}
+  renderQuestionForm: function(){
+      questionFormDiv = document.querySelector('div.questionForm');
+      questionFormView = new Cards.Views.QuestionCardForm({el: questionFormDiv, model: new Cards.Models.QuestionCard() });
+      questionFormView.render();
+  },
 
-function renderAnswerForm(questionID){
-    questionCardDiv = document.querySelector('div.questionCard');
-    questionCard = new Cards.Models.QuestionCard({id:questionID});
-    questionCard.fetch();
-    questionView = new Cards.Views.QuestionCard({el:questionCardDiv, model:questionCard});
-    answerFormDiv = document.querySelector('div.answerForm');
-    answerFormView = new Cards.Views.AnswerCardForm({el: answerFormDiv, model: new Cards.Models.AnswerCard({question_card_id:questionID}) });
-    answerFormView.render();
-}
+  renderDailyDeck: function(){
+      divMain = document.querySelector('div.questionCard');
+      questionCards = new Cards.Collections.QuestionCards();
+      questionsView = new Cards.Views.QuestionCards({el: divMain, collection:questionCards});
+  },
 
-function renderSingleQuestionView(questionID){
-    questionCardDiv = document.querySelector('div.questionCard');
-    questionCard = new Cards.Models.QuestionCard({id:questionID});
-    questionCard.fetch();
+  renderAnswerForm: function(questionID){
+      questionCardDiv = document.querySelector('div.questionCard');
+      questionCard = new Cards.Models.QuestionCard({id:questionID});
+      questionCard.fetch();
+      questionView = new Cards.Views.QuestionCard({el:questionCardDiv, model:questionCard});
+      answerFormDiv = document.querySelector('div.answerForm');
+      answerFormView = new Cards.Views.AnswerCardForm({el: answerFormDiv, model: new Cards.Models.AnswerCard({question_card_id:questionID}) });
+      answerFormView.render();
+  },
 
-    questionView = new Cards.Views.QuestionCard({el:questionCardDiv, model:questionCard});
-    answerCards = new Cards.Collections.AnswerCards(questionID);
-    answerCardsDiv = document.querySelector('div.answerCards');
-    answerCardsView = new Cards.Views.AnswerCards({collection: answerCards, el:answerCardsDiv});
-    answerCards.fetch();
-    // answerCardView.render();
-}
+  renderSingleQuestionView: function(questionID){
+      questionCardDiv = document.querySelector('div.questionCard');
+      questionCard = new Cards.Models.QuestionCard({id:questionID});
+      questionCard.fetch();
+
+      questionView = new Cards.Views.QuestionCard({el:questionCardDiv, model:questionCard});
+      answerCards = new Cards.Collections.AnswerCards(questionID);
+      answerCardsDiv = document.querySelector('div.answerCards');
+      answerCardsView = new Cards.Views.AnswerCards({collection: answerCards, el:answerCardsDiv});
+      answerCards.fetch();
+      // answerCardView.render();
+  }
+
+});
+
+
 
 $(document).ready(function() {
     // renderQuestionForm();
