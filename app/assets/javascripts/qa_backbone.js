@@ -144,24 +144,8 @@ Cards.Views.AnswerCard = Backbone.View.extend({
     this.$el.html( templateDone(this.model.attributes) );
     this.$el.css({border: "1px solid black"});
     return this;
-  },
-
-  submit: function() {
-    // this.model.attributes.answer_text = $(this.el.querySelector('input#answerText')).val();
-    var answer_text = $(this.el.querySelector('input#answerText')).val();
-    this.render();
-    this.model.save('asnwer_text', answer_text, {
-        success: function (){
-            console.log('Success!');
-            that.$el.empty();
-            window.router.navigate('cards/'+that.model.attributes.id, true);
-        },
-        error: function (){
-            console.log('failed yo');
-            window.router.navigate('cards/login', true);
-        }
-    });
   }
+
 
 });
 
@@ -229,12 +213,30 @@ Cards.Views.AnswerCardForm = Backbone.View.extend({
     this.$el.css({border: "1px solid black"});
     return this;
   },
-
   submit: function() {
-    this.model.attributes.answer_text = $(this.el.querySelector('textarea#answerText')).val();
-    this.render();
-    this.model.save();
-  },
+    var that = this;
+    var answer_text = $(this.el.querySelector('textarea#answerText')).val();
+    console.log(answer_text);
+    console.log('hoohaw');
+
+    this.model.save('answer_text', answer_text, {
+        success: function (){
+            console.log('Success!');
+            that.$el.empty();
+            window.router.navigate('cards/'+that.model.attributes.question_card_id, true);
+        },
+        error: function (){
+            console.log('failed yo');
+            window.router.navigate('cards/login', true);
+        }
+    });
+  }
+
+  // submit: function() {
+  //   this.model.attributes.answer_text = $(this.el.querySelector('textarea#answerText')).val();
+  //   this.render();
+  //   this.model.save();
+  // },
 
 });
 
