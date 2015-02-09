@@ -122,6 +122,19 @@ Cards.Templates.LoginForm = [
         "<button id='loginButton'>Submit</button>"
 ].join("");
 
+Cards.Templates.SignUpForm = [
+  // t.string   "fname"
+  // t.string   "lname"
+  // t.string   "email"
+  // t.string   "password_digest"
+  // t.string   "image_url"
+    "<p><label>Email <input type='text' name='email' id='email'/> </label> </p>",
+    "<p><label>First Name <input type='text' name='fname' id='fname'/> </label> </p>",
+    "<p><label>Last Name <input type='text' name='lname' id='lname'/> </label> </p>",
+    "<p><label>Password <input type='password' name='password' id='password'/> </label> </p>",
+    "<p><button id='loginButton'>Submit</button></p>"
+].join("");
+
 //MODEL-VIEWS
 Cards.Views.AnswerCard = Backbone.View.extend({
 
@@ -260,21 +273,43 @@ Cards.Routers.Main = Backbone.Router.extend({
     renderLoginForm: function(){
         var that = this;
         console.log("login form");
-        $("div.login").html(Cards.Templates.LoginForm);
+        $("div.auth").html(Cards.Templates.LoginForm);
         $('#loginButton').on('click', function(){
             data = JSON.stringify({email: $('#email').val(), password: $('#password').val()});
-            console.log(data);
+            // console.log(data);
             $.ajax('/sessions', {
                 type: "POST",
                 data:data,
                 contentType: "application/json"
-            }).done(function (data){
-                console.log(data);
+            }).done(function (response){
+                console.log(response);
             });
             // $(this).parent().empty();
             // that.navigate('cards/new', true);
         });
-    }
+    }, //render login form
+
+    renderSignUpForm: function(){
+      $("div.auth").html(Cards.Templates.SignUpForm);
+      $('#loginButton').on('click', function(){
+          data = JSON.stringify({
+              email: $('#email').val(),
+              fname: $('#fname').val(),
+              lname: $('#lname').val(),
+              password: $('#password').val()
+            });
+          // console.log(data);
+          $.ajax('/users', {
+              type: "POST",
+              data:data,
+              contentType: "application/json"
+          }).done(function (response){
+              console.log(response);
+          });
+          // $(this).parent().empty();
+          // that.navigate('cards/new', true);
+      });
+    }//render sign up form
 
 });
 
