@@ -1,4 +1,4 @@
-class SessionController < ApplicationController
+class SessionsController < ApplicationController
   # def new
   #   render :new
   # end
@@ -9,7 +9,8 @@ class SessionController < ApplicationController
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id
       session[:error] = nil # "Success"
-	  else
+      render json: user
+    else
       session[:error] = "Login Error"
     end
   end
