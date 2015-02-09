@@ -116,6 +116,11 @@ Cards.Templates.AnswerCardCompleted = [ "<p> <%= answer_text %> </p>" ].join("")
 
 Cards.Templates.QuestionCard = [ "<p> <%= question_text %> </p>" ].join("");
 
+Cards.Templates.LoginForm = [
+        "<label>Email <input type='text' name='email' id='email'/> </label> <br>",
+        "<label>Password <input type='password' name='password' id='password'/> </label> <br>",
+        "<button id='loginButton'>Submit</button>"
+].join("");
 
 //MODEL-VIEWS
 Cards.Views.AnswerCard = Backbone.View.extend({
@@ -208,24 +213,28 @@ Cards.Routers.Main = Backbone.Router.extend({
     '': 'renderDailyDeck',
     'cards': 'renderDailyDeck',
     'cards/new': 'renderQuestionForm',
+    'cards/login': 'renderLoginForm',
     'cards/:question_id': 'renderSingleQuestionView',
     'cards/:question_id/share': 'renderAnswerForm'
 
   },
 
    renderQuestionForm: function(){
+      console.log("rendering question form");
       questionFormDiv = document.querySelector('div.questionForm');
       questionFormView = new Cards.Views.QuestionCardForm({el: questionFormDiv, model: new Cards.Models.QuestionCard() });
       questionFormView.render();
   },
 
    renderDailyDeck: function(){
+      console.log("rendering daily deck");
       divMain = document.querySelector('div.questionCard');
       questionCards = new Cards.Collections.QuestionCards();
       questionsView = new Cards.Views.QuestionCards({el: divMain, collection:questionCards});
   },
 
    renderAnswerForm: function(questionID){
+      console.log("rendering question answer");
       questionCardDiv = document.querySelector('div.questionCard');
       questionCard = new Cards.Models.QuestionCard({id:questionID});
       questionCard.fetch();
@@ -236,6 +245,7 @@ Cards.Routers.Main = Backbone.Router.extend({
   },
 
    renderSingleQuestionView: function(questionID){
+      console.log("rendering single question view");
       questionCardDiv = document.querySelector('div.questionCard');
       questionCard = new Cards.Models.QuestionCard({id:questionID});
       questionCard.fetch();
@@ -245,9 +255,26 @@ Cards.Routers.Main = Backbone.Router.extend({
       answerCardsDiv = document.querySelector('div.answerCards');
       answerCardsView = new Cards.Views.AnswerCards({collection: answerCards, el:answerCardsDiv});
       answerCards.fetch();
-      // answerCardView.render();
   },
 
+    renderLoginForm: function(){
+        var that = this;
+        console.log("login form");
+        $("div.login").html(Cards.Templates.LoginForm);
+        $('#loginButton').on('click', function(){
+            data = JSON.stringify({email: $('#email').val(), password: $('#password').val()});
+            console.log(data);
+            $.ajax('/sessions', {
+                type: "POST",
+                data:data,
+                contentType: "application/json"
+            }).done(function (data){
+                console.log(data);
+            });
+            // $(this).parent().empty();
+            // that.navigate('cards/new', true);
+        });
+    }
 
 });
 
