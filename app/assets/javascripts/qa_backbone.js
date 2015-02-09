@@ -190,7 +190,7 @@ Cards.Views.QuestionCardForm = Backbone.View.extend({
   submit: function() {
     var that = this;
     var question_text = $(this.el.querySelector('textarea#questionText')).val();
-    this.model.save('question_text', question_text, { 
+    this.model.save('question_text', question_text, {
         success: function (){
             console.log('Success!');
             that.$el.empty();
@@ -259,10 +259,40 @@ Cards.Routers.Main = Backbone.Router.extend({
       questionCard = new Cards.Models.QuestionCard({id:questionID});
       questionCard.fetch();
       questionView = new Cards.Views.QuestionCard({el:questionCardDiv, model:questionCard});
+
       answerFormDiv = document.querySelector('div.answerForm');
       answerFormView = new Cards.Views.AnswerCardForm({el: answerFormDiv, model: new Cards.Models.AnswerCard({question_card_id:questionID}) });
-      answerFormView.render();
-  },
+      // answerFormView.render();
+
+      $test = $('div#flippable');
+
+      $test.click(function(){
+        $test.animate(
+          { opacity: 0 },
+          {
+              step: function(now,fx){
+              $test.css({ transform: "scaleY("+now+")" });
+            },
+            duration: 'slow'
+          },
+          'linear'
+        ).promise().done(function (){
+          $('div.questionCard').empty();
+          // debugger;
+          answerFormView.render();
+          $test.animate(
+            { opacity: 1 },
+            {
+                step: function(now,fx){
+                $test.css({ transform: "scaleY("+now+")" });
+              },
+              duration: 'slow'
+            },
+            'linear'
+          );
+        });
+      });
+  }, //render answer form
 
    renderSingleQuestionView: function(questionID){
       console.log("rendering single question view");
@@ -271,6 +301,7 @@ Cards.Routers.Main = Backbone.Router.extend({
       questionCard.fetch();
 
       questionView = new Cards.Views.QuestionCard({el:questionCardDiv, model:questionCard});
+
       answerCards = new Cards.Collections.AnswerCards(questionID);
       answerCardsDiv = document.querySelector('div.answerCards');
       answerCardsView = new Cards.Views.AnswerCards({collection: answerCards, el:answerCardsDiv});
@@ -323,22 +354,22 @@ Cards.Routers.Main = Backbone.Router.extend({
 function initializeNavBar(){
 
     $('#loginFormButton').on('click', function (){
-        $('div.main').children().each( function(){ $(this).empty(); } );
+        //$('div.main').children().each( function(){ $(this).empty(); } );
         window.router.navigate('cards/login', true);
     });
 
     $('#signUpFormButton').on('click', function (){
-        $('div.main').children().each( function(){ $(this).empty(); } );
+      //  $('div.main').children().each( function(){ $(this).empty(); } );
         window.router.navigate('cards/signup', true);
     });
 
     $('#newQuestionButton').on('click', function (){
-        $('div.main').children().each( function(){ $(this).empty(); } );
+      //  $('div.main').children().each( function(){ $(this).empty(); } );
         window.router.navigate('cards/new', true);
     });
 
     $('#viewDailyDeckButton').on('click', function (){
-        $('div.main').children().each( function(){ $(this).empty(); } );
+        //$('div.main').children().each( function(){ $(this).empty(); } );
         window.router.navigate('/', true);
     });
 
