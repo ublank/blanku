@@ -146,9 +146,20 @@ Cards.Views.AnswerCard = Backbone.View.extend({
   },
 
   submit: function() {
-    this.model.attributes.answer_text = $(this.el.querySelector('input#answerText')).val();
+    // this.model.attributes.answer_text = $(this.el.querySelector('input#answerText')).val();
+    var answer_text = $(this.el.querySelector('input#answerText')).val();
     this.render();
-    this.model.save();
+    this.model.save('asnwer_text', answer_text, {
+        success: function (){
+            console.log('Success!');
+            that.$el.empty();
+            window.router.navigate('cards/'+that.model.attributes.id, true);
+        },
+        error: function (){
+            console.log('failed yo');
+            window.router.navigate('cards/login', true);
+        }
+    });
   }
 
 });
@@ -265,32 +276,36 @@ Cards.Routers.Main = Backbone.Router.extend({
       // answerFormView.render();
 
       $test = $('div#flippable');
+      var clicked = false;
 
       $test.click(function(){
-        $test.animate(
-          { opacity: 0 },
-          {
+        if(!clicked){
+          $test.animate(
+            { opacity: 0 },
+            {
               step: function(now,fx){
               $test.css({ transform: "scaleY("+now+")" });
             },
-            duration: 'slow'
-          },
-          'linear'
-        ).promise().done(function (){
-          $('div.questionCard').empty();
-          // debugger;
-          answerFormView.render();
-          $test.animate(
-            { opacity: 1 },
-            {
-                step: function(now,fx){
-                $test.css({ transform: "scaleY("+now+")" });
-              },
               duration: 'slow'
             },
             'linear'
-          );
-        });
+          ).promise().done(function (){
+            clicked = true;
+            $('div.questionCard').empty();
+            // debugger;
+            answerFormView.render();
+            $test.animate(
+              { opacity: 1 },
+              {
+                step: function(now,fx){
+                $test.css({ transform: "scaleY("+now+")" });
+              },
+                duration: 'slow'
+              },
+              'linear'
+            );//animate
+          });//promise done
+        }//if
       });
   }, //render answer form
 
