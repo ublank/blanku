@@ -14,13 +14,25 @@ class UsersController < ApplicationController
     #
     # else
 
-		stuff = User.create({
- 			fname: params["fname"],
- 			lname: params["lname"],
- 			email: params["email"],
- 			password: params["password"],
- 			image_url: params["image_url"]
- 		})
+    if User.find_by(email: params['email'])
+      response.headers["Content-Type"] = "application/json"
+      response.body = JSON.generate({Signup: 'Error', Message: 'A user with that email already exists'})
+
+    else
+  		userNew = User.create({
+   			fname: params["fname"],
+   			lname: params["lname"],
+   			email: params["email"],
+   			password: params["password"],
+   			image_url: params["image_url"]
+   		})
+
+      # Deliver the signup Email
+      UserNotifier.send_signup_email(userNew).deliver
+      response.headers["Content-Type"] = "application/json"
+      response.body = JSON.generate({Signup: 'Success'})
+
+    end
 
     	# if @user.save
       # # Deliver the signup email
@@ -31,6 +43,10 @@ class UsersController < ApplicationController
     	# end
 
     # end
+
+    # puts response.body()
+
+    render json: response.body()
 
   end
 
