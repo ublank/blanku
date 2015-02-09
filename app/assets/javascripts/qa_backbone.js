@@ -278,7 +278,27 @@ Cards.Routers.Main = Backbone.Router.extend({
 
 });
 
+function initializeNavBar(){
+
+    $('#visitLoginButton').on('click', function (){
+        $('div.main').children().each( function(){ $(this).empty(); } );
+        window.router.navigate('cards/login', true);
+    });
+
+    $('#newQuestionButton').on('click', function (){
+        $('div.main').children().each( function(){ $(this).empty(); } );
+        window.router.navigate('cards/new', true);
+    });
+
+    $('#viewDailyDeckButton').on('click', function (){
+        $('div.main').children().each( function(){ $(this).empty(); } );
+        window.router.navigate('/', true);
+    });
+
+}
+
 $(function() {
   window.router = new Cards.Routers.Main();
   Backbone.history.start({pushState: true});
+  initializeNavBar();
 });
