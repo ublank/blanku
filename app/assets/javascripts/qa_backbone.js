@@ -142,6 +142,7 @@ Cards.Views.AnswerCard = Backbone.View.extend({
     var templateDone = _.template( Cards.Templates.AnswerCardCompleted );
     this.$el.empty();
     this.$el.html( templateDone(this.model.attributes) );
+    this.$el.css({border: "1px solid black"});
     return this;
   },
 
@@ -176,6 +177,7 @@ Cards.Views.QuestionCard = Backbone.View.extend({
     var template = _.template( Cards.Templates.QuestionCard );
     this.$el.empty();
     this.$el.html( template(this.model.attributes) );
+    this.$el.css({border: "1px solid black"});
     return self;
   },
 
@@ -195,6 +197,7 @@ Cards.Views.QuestionCardForm = Backbone.View.extend({
   render: function(){
     var templateNew = _.template( Cards.Templates.QuestionCardNew );
     this.$el.html( templateNew(this.model.attributes) );
+    this.$el.css({border: "1px solid black"});
     return this;
   },
 
@@ -223,6 +226,7 @@ Cards.Views.AnswerCardForm = Backbone.View.extend({
     var templateNew = _.template( Cards.Templates.AnswerCardNew );
     this.$el.empty();
     this.$el.html( templateNew(this.model.attributes) );
+    this.$el.css({border: "1px solid black"});
     return this;
   },
 
