@@ -290,7 +290,8 @@ Cards.Routers.Main = Backbone.Router.extend({
     }, //render login form
 
     renderSignUpForm: function(){
-      $("div.auth").html(Cards.Templates.SignUpForm);
+      $auth = $("div.auth");
+      $auth.html(Cards.Templates.SignUpForm);
       $('#loginButton').on('click', function(){
           data = JSON.stringify({
               email: $('#email').val(),
