@@ -227,6 +227,7 @@ Cards.Routers.Main = Backbone.Router.extend({
     'cards': 'renderDailyDeck',
     'cards/new': 'renderQuestionForm',
     'cards/login': 'renderLoginForm',
+    'cards/signup': 'renderSignUpForm',
     'cards/:question_id': 'renderSingleQuestionView',
     'cards/:question_id/share': 'renderAnswerForm'
 
@@ -314,7 +315,32 @@ Cards.Routers.Main = Backbone.Router.extend({
 
 });
 
+function initializeNavBar(){
+
+    $('#loginFormButton').on('click', function (){
+        $('div.main').children().each( function(){ $(this).empty(); } );
+        window.router.navigate('cards/login', true);
+    });
+
+    $('#signUpFormButton').on('click', function (){
+        $('div.main').children().each( function(){ $(this).empty(); } );
+        window.router.navigate('cards/signup', true);
+    });
+
+    $('#newQuestionButton').on('click', function (){
+        $('div.main').children().each( function(){ $(this).empty(); } );
+        window.router.navigate('cards/new', true);
+    });
+
+    $('#viewDailyDeckButton').on('click', function (){
+        $('div.main').children().each( function(){ $(this).empty(); } );
+        window.router.navigate('/', true);
+    });
+
+}
+
 $(function() {
   window.router = new Cards.Routers.Main();
   Backbone.history.start({pushState: true});
+  initializeNavBar();
 });
