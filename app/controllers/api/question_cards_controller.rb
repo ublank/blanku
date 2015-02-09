@@ -1,40 +1,41 @@
 class Api::QuestionCardsController < ApplicationController
 
   #GET /api/question_cards
-  def index 
+  def index
     render json: QuestionCard.all
   end
 
-  # POST /api/question_cards 
-  def create 
-    qcard = QuestionCard.create(question_card_params)
-    render json: qcard
+  # POST /api/question_cards
+  def create
+    if session[:user_id]
+      qcard = QuestionCard.create(question_card_params)
+      render json: qcard
+    else
+      error = ({Status: 'Error', Message: 'You are not logged in'})
+      render json: error, :status => 403
+    end
   end
-  #result = HTTParty.post('http://localhost:3000/api/question_cards', {body:{user_id:1, text: "another from httparty-------", url: "WOOP WOOP WOOP"}.to_json,  headers: {'Content-Type' => 'application/json'}})
-  
+
   #GET /api/question_cards/:id
   def show
     render json: QuestionCard.find(params[:id])
   end
 
   #PUT /api/question_cards/:id
-  def update
-    card = QuestionCard.find(params[:id])
-    card.update(question_card_params)
-    render json: card
-  end
-  #result = HTTParty.put('http://localhost:3000/api/question_cards/', {body:{user_id:1, text: "another from httparty-------", url: "WOOP WOOP WOOP"}.to_json,  headers: {'Content-Type' => 'application/json'}})
+  # def update
+  #   card = QuestionCard.find(params[:id])
+  #   card.update(question_card_params)
+  #   render json: card
+  # end
 
   #DELETE /api/question_cards/:id
-  def destroy
-    QuestionCard.find(params[:id]).destroy
-    head :no_content
-  end
-  #HTTParty.delete('http://localhost:3000/api/question_cards/4')
+  # def destroy
+  #   QuestionCard.find(params[:id]).destroy
+  #   head :no_content
+  # end
 
   def question_card_params
     params.require(:question_card).permit(:user_id, :question_text, :url, :expiration_date)
   end
 
 end
-
