@@ -119,15 +119,11 @@ Cards.Templates.QuestionCard = [ "<p> <%= question_text %> </p>" ].join("");
 Cards.Templates.LoginForm = [
         "<label>Email <input type='text' name='email' id='email'/> </label> <br>",
         "<label>Password <input type='password' name='password' id='password'/> </label> <br>",
-        "<button id='loginButton'>Submit</button>"
+        "<button id='loginButton'>Submit</button>",
+        "<button id='userSignupButton'>New User?</button>"
 ].join("");
 
 Cards.Templates.SignUpForm = [
-  // t.string   "fname"
-  // t.string   "lname"
-  // t.string   "email"
-  // t.string   "password_digest"
-  // t.string   "image_url"
     "<p><label>Email <input type='text' name='email' id='email'/> </label> </p>",
     "<p><label>First Name <input type='text' name='fname' id='fname'/> </label> </p>",
     "<p><label>Last Name <input type='text' name='lname' id='lname'/> </label> </p>",
@@ -192,9 +188,19 @@ Cards.Views.QuestionCardForm = Backbone.View.extend({
   },
 
   submit: function() {
-    this.model.attributes.question_text = $(this.el.querySelector('textarea#questionText')).val();
-    this.render();
-    this.model.save();
+    var that = this;
+    var question_text = $(this.el.querySelector('textarea#questionText')).val();
+    this.model.save('question_text', question_text, { 
+        success: function (){
+            console.log('Success!');
+            that.$el.empty();
+            window.router.navigate('cards/'+that.model.attributes.id, true);
+        },
+        error: function (){
+            console.log('failed yo');
+            window.router.navigate('cards/login', true);
+        }
+    });
   }
 });
 
@@ -277,16 +283,15 @@ Cards.Routers.Main = Backbone.Router.extend({
         $("div.auth").html(Cards.Templates.LoginForm);
         $('#loginButton').on('click', function(){
             data = JSON.stringify({email: $('#email').val(), password: $('#password').val()});
-            // console.log(data);
             $.ajax('/sessions', {
                 type: "POST",
                 data:data,
                 contentType: "application/json"
             }).done(function (response){
                 console.log(response);
+                window.USERID = response.id;
+                $("div.auth").empty();
             });
-            // $(this).parent().empty();
-            // that.navigate('cards/new', true);
         });
     }, //render login form
 
