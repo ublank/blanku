@@ -124,11 +124,6 @@ Cards.Templates.LoginForm = [
 ].join("");
 
 Cards.Templates.SignUpForm = [
-  // t.string   "fname"
-  // t.string   "lname"
-  // t.string   "email"
-  // t.string   "password_digest"
-  // t.string   "image_url"
     "<p><label>Email <input type='text' name='email' id='email'/> </label> </p>",
     "<p><label>First Name <input type='text' name='fname' id='fname'/> </label> </p>",
     "<p><label>Last Name <input type='text' name='lname' id='lname'/> </label> </p>",
@@ -294,9 +289,9 @@ Cards.Routers.Main = Backbone.Router.extend({
                 contentType: "application/json"
             }).done(function (response){
                 console.log(response);
+                window.USERID = response.id;
+                $("div.auth").empty();
             });
-            // $(this).parent().empty();
-            // that.navigate('cards/new', true);
         });
     }, //render login form
 
