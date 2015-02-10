@@ -10,7 +10,9 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'pry-rails'
-
+gem "twitter-bootstrap-rails"
+gem "therubyracer"
+gem "less-rails"
 gem 'bcrypt', '~> 3.1.7'
 
 group :development, :test do

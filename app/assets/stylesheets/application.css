@@ -12,4 +12,39 @@
  *
  *= require_tree .
  *= require_self
+
  */
+
+
+body {
+  padding-top: 20px;
+  padding-bottom: 60px;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 1000px;
+}
+
+.jumbotron {
+  background-color: white;
+
+}
+
+/* .questionCard { */
+/*   background-color: #66CCFF; */
+/*   width:275px; */
+/*   height:300px; */
+/*   border:1px solid #66CCFF; */
+/* } */
+
+/* .answerCard { */
+/*   background-color: #66CCFF; */
+/*   width:275px; */
+/*   height:440px; */
+/*   border:1px solid #66CCFF; */
+/* } */
+
+
+
+
