@@ -68,6 +68,8 @@ Cards.Views.AnswerCards = Backbone.View.extend({
         self.$el.append( answerCardView.render().el );
       } //function
     ); //each return self;
+    // console.log(this);
+    return this;
   }
 
 });
@@ -85,6 +87,12 @@ Cards.Views.QuestionCards = Backbone.View.extend({
                 function(questionCard){
                     var questionCardView = new Cards.Views.QuestionCard({ model: questionCard });
                     self.$el.append( questionCardView.render().el );
+                    $(questionCardView.render().el).click(
+                      function(){
+                        console.log('I clicked a link and I liked it.')
+                        window.router.navigate('cards/'+questionCard.attributes.id+'/share',true);
+                      }
+                    );
                 }
               );//each
         return self;
@@ -153,13 +161,14 @@ Cards.Views.AnswerCard = Backbone.View.extend({
 Cards.Views.QuestionCard = Backbone.View.extend({
 
   initialize: function(){
-    this.listenTo(this.model, 'all', this.render); //change 'all' to sync later
+    this.listenTo(this.model, 'sync', this.render); //change 'all' to sync later
   },
 
   render: function(){
+
+    this.$el.empty();
     var self = this;
     var template = _.template( Cards.Templates.QuestionCard );
-    this.$el.empty();
     this.$el.html( template(this.model.attributes) );
     this.$el.css({border: "1px solid black"});
     return self;
@@ -179,6 +188,7 @@ Cards.Views.QuestionCardForm = Backbone.View.extend({
   events: { "click button[class='question']": 'submit' },
 
   render: function(){
+    this.$el.empty();
     var templateNew = _.template( Cards.Templates.QuestionCardNew );
     this.$el.html( templateNew(this.model.attributes) );
     this.$el.css({border: "1px solid black"});
@@ -207,8 +217,8 @@ Cards.Views.AnswerCardForm = Backbone.View.extend({
   events: { "click button[class='answer']": 'submit' },
 
   render: function() {
-    var templateNew = _.template( Cards.Templates.AnswerCardNew );
     this.$el.empty();
+    var templateNew = _.template( Cards.Templates.AnswerCardNew );
     this.$el.html( templateNew(this.model.attributes) );
     this.$el.css({border: "1px solid black"});
     return this;
@@ -258,27 +268,27 @@ Cards.Routers.Main = Backbone.Router.extend({
 
    renderQuestionForm: function(){
       console.log("rendering question form");
-      questionFormDiv = document.querySelector('div.questionForm');
+      questionFormDiv = document.querySelector('div#flippable');
       questionFormView = new Cards.Views.QuestionCardForm({el: questionFormDiv, model: new Cards.Models.QuestionCard() });
       questionFormView.render();
   },
 
    renderDailyDeck: function(){
       console.log("rendering daily deck");
-      divMain = document.querySelector('div.questionCard');
+      divMain = document.querySelector('div#flippable');
       questionCards = new Cards.Collections.QuestionCards();
       questionsView = new Cards.Views.QuestionCards({el: divMain, collection:questionCards});
   },
 
    renderAnswerForm: function(questionID){
       console.log("rendering question answer");
-      questionCardDiv = document.querySelector('div.questionCard');
+      flippableDiv = document.querySelector('div#flippable');
       questionCard = new Cards.Models.QuestionCard({id:questionID});
       questionCard.fetch();
-      questionView = new Cards.Views.QuestionCard({el:questionCardDiv, model:questionCard});
+      questionView = new Cards.Views.QuestionCard({el:flippableDiv, model:questionCard});
 
-      answerFormDiv = document.querySelector('div.answerForm');
-      answerFormView = new Cards.Views.AnswerCardForm({el: answerFormDiv, model: new Cards.Models.AnswerCard({question_card_id:questionID}) });
+      // answerFormDiv = document.querySelector('div#flippable');
+      answerFormView = new Cards.Views.AnswerCardForm({el: flippableDiv, model: new Cards.Models.AnswerCard({question_card_id:questionID}) });
       // answerFormView.render();
 
       $test = $('div#flippable');
@@ -286,6 +296,8 @@ Cards.Routers.Main = Backbone.Router.extend({
 
       $test.click(function(){
         if(!clicked){
+          clicked = true;
+          console.log('clicked ' + clicked);
           $test.animate(
             { opacity: 0 },
             {
@@ -296,7 +308,6 @@ Cards.Routers.Main = Backbone.Router.extend({
             },
             'linear'
           ).promise().done(function (){
-            clicked = true;
             $('div.questionCard').empty();
             // debugger;
             answerFormView.render();
@@ -317,16 +328,25 @@ Cards.Routers.Main = Backbone.Router.extend({
 
    renderSingleQuestionView: function(questionID){
       console.log("rendering single question view");
-      questionCardDiv = document.querySelector('div.questionCard');
-      questionCard = new Cards.Models.QuestionCard({id:questionID});
+      var $flippableDiv = $('div#flippable');
+
+      var questionCard = new Cards.Models.QuestionCard({id:questionID});
+      var answerCards = new Cards.Collections.AnswerCards(questionID);
+
+      var $questionCardDiv = $('<div>');
+      $questionCardDiv.addClass('questionCard');
+      $questionCardDiv.appendTo($flippableDiv);
+      var questionView = new Cards.Views.QuestionCard({el: $questionCardDiv, model:questionCard});
+
+      var $answerCardsDiv = $('<div>');
+      $answerCardsDiv.addClass('answerCards');
+      $answerCardsDiv.appendTo($flippableDiv);
+      // debugger;
+      var answerCardsView = new Cards.Views.AnswerCards({collection: answerCards, el: $answerCardsDiv});
+
+      answerCards.fetch();
       questionCard.fetch();
 
-      questionView = new Cards.Views.QuestionCard({el:questionCardDiv, model:questionCard});
-
-      answerCards = new Cards.Collections.AnswerCards(questionID);
-      answerCardsDiv = document.querySelector('div.answerCards');
-      answerCardsView = new Cards.Views.AnswerCards({collection: answerCards, el:answerCardsDiv});
-      answerCards.fetch();
   },
 
     renderLoginForm: function(){

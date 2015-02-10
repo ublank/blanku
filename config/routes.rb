@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   # oh you want it to go to welcome#index, ok ill go to welcome index
   # then backbone is chilling at welcome index, sees the browser goes, cool, now im gonna route you by backbone.
   get 'cards/*other', to: 'welcome#index'
+  get 'cards/*other/*other', to: 'welcome#index'
+  get 'cards/*other/*other/*other', to: 'welcome#index'
   get 'cards', to: 'welcome#index'
   get '*other', to: 'welcome#index'
 
