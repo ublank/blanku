@@ -294,7 +294,7 @@ Cards.Routers.Main = Backbone.Router.extend({
       $test = $('div#flippable');
       var clicked = false;
 
-      $test.click(function(){
+      $test.dblclick(function(){
         if(!clicked){
           clicked = true;
           console.log('clicked ' + clicked);
