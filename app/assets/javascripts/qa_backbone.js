@@ -384,6 +384,7 @@ Cards.Routers.Main = Backbone.Router.extend({
               contentType: "application/json"
           }).done(function (response){
               console.log(response);
+              $('.auth').empty();
           });
           // $(this).parent().empty();
           // that.navigate('cards/new', true);
